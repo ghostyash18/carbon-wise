@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { memo } from "react";
 import { useFormContext, Controller } from "react-hook-form";
 import { CalculatorData } from "@/lib/calculateCarbonFootprint";
 import { Label } from "@/components/ui/label";
@@ -11,93 +11,71 @@ import { Car, Bike, Bus, Train, Plane } from "lucide-react";
 import { useTranslation } from "@/hooks/useTranslation";
 import { StepNavigation } from "@/components/common/step-navigation";
 
-export function StepTransportation({ onNext }: { onNext: () => void }) {
+export const StepTransportation = memo(function StepTransportation({ onNext }: { onNext: () => void }) {
   const { control, watch } = useFormContext<CalculatorData>();
   const { t } = useTranslation();
   const primaryTransport = watch("primaryTransport");
-
+  
   return (
-    <div className="space-y-8">
-      <div>
-        <h2 className="text-2xl font-semibold mb-2">{t("calculator.transport.title")}</h2>
+    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="space-y-2">
+        <h2 className="text-2xl font-bold tracking-tight flex items-center gap-2">
+          <Car className="h-6 w-6 text-primary" />
+          {t("calculator.transport.title")}
+        </h2>
         <p className="text-muted-foreground">{t("calculator.transport.description")}</p>
       </div>
 
       <div className="space-y-6">
-        {/* Primary Transport Mode */}
-        <div className="space-y-4">
-          <Label className="text-base">{t("calculator.transport.primary_mode")}</Label>
+        <div className="space-y-3">
+          <Label className="text-base font-semibold">{t("calculator.transport.primary")}</Label>
           <Controller
-            control={control}
             name="primaryTransport"
+            control={control}
             render={({ field }) => (
-              <RadioGroup
-                onValueChange={field.onChange}
-                value={field.value}
+              <RadioGroup 
+                onValueChange={field.onChange} 
+                defaultValue={field.value}
                 className="grid grid-cols-2 md:grid-cols-4 gap-4"
               >
                 {[
-                  { value: "car", label: "Car", icon: Car },
-                  { value: "motorcycle", label: "Motorcycle", icon: Bike },
-                  { value: "public", label: "Public Transit", icon: Bus },
-                  { value: "bike", label: "Walk / Bike", icon: Bike },
-                ].map((option) => (
-                  <Label
-                    key={option.value}
-                    className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer"
-                  >
-                    <RadioGroupItem value={option.value} className="sr-only" />
-                    <option.icon className="mb-3 h-6 w-6" />
-                    <span className="text-sm font-medium">{option.label}</span>
-                  </Label>
+                  { value: "car", icon: Car, label: t("calculator.transport.modes.car") },
+                  { value: "motorcycle", icon: Bike, label: t("calculator.transport.modes.motorcycle") },
+                  { value: "public", icon: Bus, label: t("calculator.transport.modes.public") },
+                  { value: "bike", icon: Train, label: t("calculator.transport.modes.bike") },
+                ].map((mode) => (
+                  <div key={mode.value}>
+                    <RadioGroupItem value={mode.value} id={`transport-${mode.value}`} className="peer sr-only" />
+                    <Label
+                      htmlFor={`transport-${mode.value}`}
+                      className="flex flex-col items-center justify-between rounded-xl border-2 border-muted bg-transparent p-4 hover:bg-muted/50 peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/5 cursor-pointer transition-all"
+                    >
+                      <mode.icon className="mb-3 h-6 w-6" />
+                      <span className="text-sm font-medium">{mode.label}</span>
+                    </Label>
+                  </div>
                 ))}
               </RadioGroup>
             )}
           />
         </div>
 
-        {/* Weekly Distance */}
-        {primaryTransport !== "bike" && (
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <Label className="text-base">Weekly distance traveled (km)</Label>
-              <span className="font-mono text-sm text-primary bg-primary/10 px-2 py-1 rounded">
-                {watch("weeklyDistance")} km
-              </span>
-            </div>
-            <Controller
-              control={control}
-              name="weeklyDistance"
-              render={({ field }) => (
-                <Slider
-                  min={0}
-                  max={1000}
-                  step={10}
-                  value={[field.value || 0]}
-                  onValueChange={(vals: any) => field.onChange(vals[0])}
-                />
-              )}
-            />
-          </div>
-        )}
-
-        {/* Fuel Type */}
         {(primaryTransport === "car" || primaryTransport === "motorcycle") && (
-          <div className="space-y-4">
-            <Label className="text-base">Fuel Type</Label>
+          <div className="space-y-3 animate-in zoom-in-95 duration-300">
+            <Label htmlFor="fuelType" className="text-base font-semibold">{t("calculator.transport.fuel")}</Label>
             <Controller
-              control={control}
               name="fuelType"
+              control={control}
               render={({ field }) => (
-                <Select onValueChange={field.onChange} value={field.value}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select fuel type" />
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <SelectTrigger id="fuelType" className="h-12 rounded-xl">
+                    <SelectValue placeholder={t("calculator.transport.fuel")} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="petrol">Petrol</SelectItem>
-                    <SelectItem value="diesel">Diesel</SelectItem>
-                    <SelectItem value="hybrid">Hybrid</SelectItem>
-                    <SelectItem value="electric">Electric (EV)</SelectItem>
+                    <SelectItem value="petrol">{t("calculator.transport.fuels.petrol")}</SelectItem>
+                    <SelectItem value="diesel">{t("calculator.transport.fuels.diesel")}</SelectItem>
+                    <SelectItem value="electric">{t("calculator.transport.fuels.electric")}</SelectItem>
+                    <SelectItem value="hybrid">{t("calculator.transport.fuels.hybrid")}</SelectItem>
                   </SelectContent>
                 </Select>
               )}
@@ -105,35 +83,62 @@ export function StepTransportation({ onNext }: { onNext: () => void }) {
           </div>
         )}
 
-        {/* Flights */}
-        <div className="pt-4 border-t space-y-6">
-          <h3 className="text-lg font-medium flex items-center gap-2"><Plane className="h-5 w-5" /> Air Travel (Past 12 months)</h3>
-          
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
+            <Label className="text-base font-semibold">{t("calculator.transport.distance")}</Label>
+            <span className="text-sm font-bold text-primary bg-primary/10 px-3 py-1 rounded-full">
+              {watch("weeklyDistance")} km
+            </span>
+          </div>
+          <Controller
+            name="weeklyDistance"
+            control={control}
+            render={({ field }) => (
+              <Slider
+                min={0}
+                max={1000}
+                step={10}
+                value={[field.value]}
+                onValueChange={(val) => field.onChange(val[0])}
+                className="py-4"
+              />
+            )}
+          />
+          <div className="flex justify-between text-xs text-muted-foreground font-medium">
+            <span>0 km</span>
+            <span>1000+ km</span>
+          </div>
+        </div>
+
+        <div className="space-y-4 pt-4 border-t">
+          <Label className="text-base font-semibold flex items-center gap-2">
+            <Plane className="h-4 w-4" />
+            {t("calculator.transport.flights_year")}
+          </Label>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-4">
+            <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <Label>Short flights (&lt; 3 hrs)</Label>
-                <span className="font-mono text-sm">{watch("shortFlights")}</span>
+                <Label className="text-sm">{t("calculator.transport.short_flights")}</Label>
+                <span className="text-sm font-bold">{watch("shortFlights")}</span>
               </div>
               <Controller
-                control={control}
                 name="shortFlights"
+                control={control}
                 render={({ field }) => (
-                  <Slider min={0} max={20} step={1} value={[field.value || 0]} onValueChange={(vals: any) => field.onChange(vals[0])} />
+                  <Slider min={0} max={20} step={1} value={[field.value]} onValueChange={(val) => field.onChange(val[0])} />
                 )}
               />
             </div>
-            
-            <div className="space-y-4">
+            <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <Label>Long flights (&gt; 3 hrs)</Label>
-                <span className="font-mono text-sm">{watch("longFlights")}</span>
+                <Label className="text-sm">{t("calculator.transport.long_flights")}</Label>
+                <span className="text-sm font-bold">{watch("longFlights")}</span>
               </div>
               <Controller
-                control={control}
                 name="longFlights"
+                control={control}
                 render={({ field }) => (
-                  <Slider min={0} max={10} step={1} value={[field.value || 0]} onValueChange={(vals: any) => field.onChange(vals[0])} />
+                  <Slider min={0} max={10} step={1} value={[field.value]} onValueChange={(val) => field.onChange(val[0])} />
                 )}
               />
             </div>
@@ -144,4 +149,4 @@ export function StepTransportation({ onNext }: { onNext: () => void }) {
       <StepNavigation onNext={onNext} nextText={t("calculator.transport.continue")} />
     </div>
   );
-}
+});

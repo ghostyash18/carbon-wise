@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { memo } from "react";
 import { useFormContext, Controller } from "react-hook-form";
 import { CalculatorData } from "@/lib/calculateCarbonFootprint";
 import { Label } from "@/components/ui/label";
@@ -11,7 +11,7 @@ import { Home, Users, Zap, Sun } from "lucide-react";
 import { useTranslation } from "@/hooks/useTranslation";
 import { StepNavigation } from "@/components/common/step-navigation";
 
-export function StepHomeEnergy({ onNext, onBack }: { onNext: () => void, onBack: () => void }) {
+export const StepHomeEnergy = memo(function StepHomeEnergy({ onNext, onBack }: { onNext: () => void, onBack: () => void }) {
   const { control, watch } = useFormContext<CalculatorData>();
   const { t } = useTranslation();
 
@@ -93,7 +93,7 @@ export function StepHomeEnergy({ onNext, onBack }: { onNext: () => void, onBack:
         </div>
       </div>
 
-      <StepNavigation onNext={onNext} onBack={onBack} nextText={t("calculator.home.calculate")} />
+      <StepNavigation onNext={onNext} onBack={onBack} nextText={t("calculator.energy.continue")} />
     </div>
   );
-}
+});

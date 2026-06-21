@@ -1,19 +1,20 @@
 "use client";
 
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, memo } from "react";
 import { useFormContext } from "react-hook-form";
 import confetti from "canvas-confetti";
 import { motion } from "framer-motion";
 import { CalculatorData, calculateCarbonFootprint, AVERAGE_ANNUAL_EMISSIONS_KG } from "@/lib/calculateCarbonFootprint";
 import { Button } from "@/components/ui/button";
 import { Share2, RefreshCw, Car, Utensils, Zap, Leaf } from "lucide-react";
-import { EcoCoachChat } from "@/components/ai-coach/eco-coach-chat";
+import dynamic from "next/dynamic";
+const EcoCoachChat = dynamic(() => import("@/components/ai-coach/eco-coach-chat").then(mod => mod.EcoCoachChat), { ssr: false });
 import { useRouter } from "next/navigation";
 import { useTranslation } from "@/hooks/useTranslation";
 import { ImpactMetric } from "@/components/common/impact-metric";
 import { useCalculatorStore } from "@/store/calculatorStore";
 
-export function StepResults({ onRecalculate }: { onRecalculate: () => void }) {
+export const StepResults = memo(function StepResults({ onRecalculate }: { onRecalculate: () => void }) {
   const { getValues } = useFormContext<CalculatorData>();
   const router = useRouter();
   const { t } = useTranslation();
@@ -24,6 +25,20 @@ export function StepResults({ onRecalculate }: { onRecalculate: () => void }) {
   const results = useMemo(() => calculateCarbonFootprint(data), [data]);
 
   const isBetterThanAverage = results.comparisonPercentage < 0;
+
+  const handleDownload = async () => {
+    // Only import html2pdf dynamically on client side
+    const html2pdf = (await import('html2pdf.js')).default;
+    const element = document.getElementById('report-container');
+    const opt = {
+      margin:       1,
+      filename:     'Carbon_Footprint_Report.pdf',
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2, useCORS: true },
+      jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+    html2pdf().set(opt).from(element).save();
+  };
 
   useEffect(() => {
     let isSaved = false;
@@ -66,7 +81,7 @@ export function StepResults({ onRecalculate }: { onRecalculate: () => void }) {
   }
 
   return (
-    <div className="space-y-8 text-center" aria-live="polite">
+    <div id="report-container" className="space-y-8 text-center" aria-live="polite">
       <div className="space-y-2">
         <h2 className="text-3xl font-bold tracking-tight">{t("calculator.results.title")}</h2>
         <p className="text-muted-foreground">{t("calculator.results.description")}</p>
@@ -157,6 +172,10 @@ export function StepResults({ onRecalculate }: { onRecalculate: () => void }) {
           <Button variant="outline" onClick={onRecalculate} className="gap-2 w-full sm:w-auto">
             <RefreshCw className="h-4 w-4" aria-hidden="true" /> {t("calculator.results.recalculate")}
           </Button>
+          <Button variant="outline" onClick={handleDownload} className="gap-2 w-full sm:w-auto">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+            Download PDF
+          </Button>
           <Button 
             variant="outline" 
             className="gap-2 w-full sm:w-auto hover:bg-[#1DA1F2] hover:text-white transition-colors"
@@ -173,4 +192,4 @@ export function StepResults({ onRecalculate }: { onRecalculate: () => void }) {
       </div>
     </div>
   );
-}
+});

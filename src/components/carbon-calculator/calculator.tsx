@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, memo } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -61,9 +61,9 @@ export function CarbonCalculator() {
       resetStore();
     }
     setIsLoaded(true);
-  }, []); // Run only once on mount to hydrate the form with persisted store data
+  }, [storeData, methods, resetStore]); // Run only once on mount to hydrate the form with persisted store data
 
-  const handleNext = async () => {
+  const handleNext = useCallback(async () => {
     const fieldsToValidate = getFieldsForStep(currentStep);
     const isStepValid = await methods.trigger(fieldsToValidate as any);
     
@@ -76,14 +76,14 @@ export function CarbonCalculator() {
       setStep(currentStep + 1);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-  };
+  }, [currentStep, methods, setData, setStep]);
 
-  const handleBack = () => {
+  const handleBack = useCallback(() => {
     if (currentStep > 1) {
       setStep(currentStep - 1);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-  };
+  }, [currentStep, setStep]);
 
   const getFieldsForStep = (step: number): string[] => {
     switch (step) {

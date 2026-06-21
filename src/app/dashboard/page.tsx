@@ -10,6 +10,7 @@ const HistoryChart = dynamic(() => import("@/components/dashboard/history-chart"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Leaf, Award, TrendingDown } from "lucide-react"
 import { useCalculatorStore } from "@/store/calculatorStore"
+import { DailyActionTracker } from "@/components/dashboard/daily-action-tracker"
 
 export default function DashboardPage() {
   const { data: session, status } = useSession()
@@ -80,9 +81,13 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
       </div>
-
-      <div className="grid gap-6">
-        <HistoryChart data={calculations} />
+      <div className="grid gap-6 md:grid-cols-3 mb-8">
+        <div className="md:col-span-2 grid gap-6">
+          <HistoryChart data={calculations} />
+        </div>
+        <div className="md:col-span-1">
+          <DailyActionTracker />
+        </div>
       </div>
     </div>
   )

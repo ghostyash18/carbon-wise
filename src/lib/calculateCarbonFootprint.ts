@@ -38,8 +38,8 @@ export const AVERAGE_ANNUAL_EMISSIONS_KG = 1900;
 
 export function calculateCarbonFootprint(data: CalculatorData): CarbonBreakdown {
   // --- 1. Transportation ---
-  // Source: IPCC (Intergovernmental Panel on Climate Change) Guidelines for National Greenhouse Gas Inventories
-  // Emission factors per km (kg CO2e / km)
+  // Source: IPCC & TERI (The Energy and Resources Institute, India)
+  // Emission factors per km (kg CO2e / km) adjusted for average Indian vehicle efficiencies and occupancy
   const transportFactors: Record<TransportMode, Record<FuelType, number>> = {
     car: {
       petrol: 0.192,
@@ -56,11 +56,11 @@ export function calculateCarbonFootprint(data: CalculatorData): CarbonBreakdown 
       none: 0,
     },
     public: {
-      petrol: 0.105, // average bus
-      diesel: 0.105,
-      electric: 0.04, // electric bus / train
-      hybrid: 0.08,
-      none: 0.105, // fallback
+      petrol: 0.05,  // shared auto/bus
+      diesel: 0.04,  // Indian diesel bus (high occupancy)
+      electric: 0.02, // electric bus / metro
+      hybrid: 0.03,
+      none: 0.04, // fallback
     },
     bike: {
       petrol: 0, diesel: 0, electric: 0, hybrid: 0, none: 0
@@ -104,9 +104,9 @@ export function calculateCarbonFootprint(data: CalculatorData): CarbonBreakdown 
 
 
   // --- 3. Home Energy ---
-  // Source: EPA (Environmental Protection Agency) / CEA (Central Electricity Authority, India)
-  // India's average grid emission factor is approx 0.71 kg CO2e / kWh
-  const gridEmissionFactor = 0.71; 
+  // Source: CEA (Central Electricity Authority, India) CO2 Baseline Database
+  // India's average grid emission factor for FY22-23 is approx 0.716 kg CO2e / kWh
+  const gridEmissionFactor = 0.716; 
   const monthlyEnergyEmissions = (Number(data.monthlyElectricityKWh) || 0) * gridEmissionFactor;
   let annualEnergyEmissions = monthlyEnergyEmissions * 12;
 

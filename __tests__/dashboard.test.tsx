@@ -24,6 +24,8 @@ jest.mock('recharts', () => {
 });
 
 // Mock Zustand store
+const mockInitializeDailyActions = jest.fn();
+const mockToggleDailyAction = jest.fn();
 jest.mock('@/store/calculatorStore', () => ({
   useCalculatorStore: () => ({
     calculationHistory: [
@@ -31,6 +33,11 @@ jest.mock('@/store/calculatorStore', () => ({
     ],
     userPledges: [],
     calculationCount: 1,
+    dailyActions: [],
+    streak: 0,
+    totalPoints: 0,
+    initializeDailyActions: mockInitializeDailyActions,
+    toggleDailyAction: mockToggleDailyAction,
   }),
 }));
 

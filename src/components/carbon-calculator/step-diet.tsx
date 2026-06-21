@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import React, { memo } from "react";
 import { useFormContext, Controller } from "react-hook-form";
 import { CalculatorData } from "@/lib/calculateCarbonFootprint";
 import { Label } from "@/components/ui/label";
@@ -11,7 +12,7 @@ import { Utensils, Egg, Milk, Fish, Beef, Drumstick } from "lucide-react";
 import { useTranslation } from "@/hooks/useTranslation";
 import { StepNavigation } from "@/components/common/step-navigation";
 
-export function StepDiet({ onNext, onBack }: { onNext: () => void, onBack: () => void }) {
+export const StepDiet = memo(function StepDiet({ onNext, onBack }: { onNext: () => void, onBack: () => void }) {
   const { control, watch } = useFormContext<CalculatorData>();
   const { t } = useTranslation();
 
@@ -107,4 +108,4 @@ export function StepDiet({ onNext, onBack }: { onNext: () => void, onBack: () =>
       <StepNavigation onNext={onNext} onBack={onBack} nextText={t("calculator.diet.continue")} />
     </div>
   );
-}
+});
