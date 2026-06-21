@@ -1,0 +1,110 @@
+{
+  "common": {
+    "back": "Back",
+    "next": "Next",
+    "calculate_impact": "Calculate Your Impact",
+    "loading": "Loading...",
+    "error_boundary": {
+      "title": "Something went wrong",
+      "description": "We encountered an unexpected error. Please try refreshing the page.",
+      "retry": "Try again"
+    }
+  },
+  "nav": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "calculate": "Calculate Impact",
+    "learn": "Learn",
+    "stories": "Impact Stories",
+    "leaderboard": "Leaderboard",
+    "about": "About"
+  },
+  "calculator": {
+    "title": "Calculate Your Carbon Footprint",
+    "description": "Find out your estimated annual CO₂ emissions and get actionable tips to reduce them. It takes less than 3 minutes.",
+    "step_of": "Step {{current}} of {{total}}",
+    "completed": "{{percent}}% Completed",
+    "transport": {
+      "title": "Transportation",
+      "description": "How do you usually get around? Transport makes up a large part of personal carbon footprints.",
+      "primary_mode": "Primary mode of transport",
+      "car": "Car",
+      "motorcycle": "Motorcycle",
+      "public_transit": "Public Transit",
+      "bike_walk": "Bicycle / Walking",
+      "weekly_distance": "Weekly distance (km)",
+      "fuel_type": "Fuel type",
+      "petrol": "Petrol",
+      "diesel": "Diesel",
+      "electric": "Electric",
+      "hybrid": "Hybrid",
+      "flights": "Flights per year",
+      "short_flights": "Short-haul flights (< 3 hours)",
+      "long_flights": "Long-haul flights (> 3 hours)",
+      "continue": "Continue to Diet"
+    },
+    "diet": {
+      "title": "Diet & Food",
+      "description": "What we eat has a massive impact. Tell us about your average weekly consumption.",
+      "meat_consumption": "Meat Consumption (Servings per week)",
+      "beef_lamb": "Beef / Lamb",
+      "chicken_pork": "Chicken / Pork",
+      "fish_seafood": "Fish / Seafood",
+      "dairy_egg": "Dairy & Egg Consumption",
+      "dairy_high": "High (Daily)",
+      "dairy_medium": "Medium (Few times/week)",
+      "dairy_low": "Low (Rarely)",
+      "dairy_none": "None (Vegan)",
+      "continue": "Continue to Energy"
+    },
+    "home": {
+      "title": "Home Energy",
+      "description": "Your household energy usage is the final major piece of your footprint puzzle.",
+      "household_size": "Household Size",
+      "people": "people",
+      "household_size_tip": "Home energy emissions are divided equally among household members.",
+      "electricity": "Monthly Electricity Usage (kWh)",
+      "electricity_tip": "Tip: Check your recent utility bill. Average Indian household uses around 150-250 kWh/month.",
+      "heating": "Heating/Cooking Fuel",
+      "heating_none": "None / Mostly Electric",
+      "heating_gas": "LPG / Piped Gas",
+      "heating_electric": "Electric Heater/Induction",
+      "renewable": "Renewable Energy Share",
+      "renewable_tip": "What percentage of your electricity comes from solar/wind? (e.g. rooftop solar)",
+      "calculate": "Calculate Results"
+    },
+    "results": {
+      "title": "Your Carbon Footprint",
+      "description": "Here's the breakdown of your estimated annual emissions.",
+      "total_emissions": "Total Annual Emissions",
+      "tonnes": "Tonnes CO₂e",
+      "breakdown": "Emission Breakdown",
+      "transportation": "Transportation",
+      "diet": "Diet & Food",
+      "home_energy": "Home Energy",
+      "recalculate": "Recalculate",
+      "share": "Share Your Impact",
+      "view_dashboard": "View Detailed Dashboard"
+    }
+  },
+  "dashboard": {
+    "title": "Your Dashboard",
+    "description": "Detailed insights into your carbon footprint",
+    "total_annual": "Total Annual Emissions",
+    "no_data": "No Data Available",
+    "no_data_desc": "You haven't completed the carbon footprint calculator yet. Complete the assessment to view your personalized dashboard.",
+    "take_calculator": "Take the Calculator"
+  },
+  "coach": {
+    "talk": "Talk to EcoCoach",
+    "title": "EcoCoach",
+    "subtitle": "Your personal sustainability guide",
+    "greeting": "Hi! I'm EcoCoach 🌱 Your personal sustainability guide.",
+    "analysis": "I've analyzed your footprint. Your highest emission area is {{category}}. Here are 3 personalized tips tailored just for you:",
+    "commit": "I'll try this",
+    "committed": "Committed! 🌿",
+    "quick_how": "How do I start?",
+    "quick_more": "Show me more tips",
+    "fallback_response": "That's a great question! While I'm just a demo coach right now, taking that first small step makes the biggest difference. You've got this!"
+  }
+}
