@@ -21,6 +21,7 @@ export function Navbar() {
     { href: "/", label: t("nav.home") },
     { href: "/dashboard", label: t("nav.dashboard") },
     { href: "/calculate", label: t("nav.calculate") },
+    { href: "/offset", label: t("nav.offset") },
     { href: "/learn", label: t("nav.learn") },
     { href: "/stories", label: t("nav.stories") },
     { href: "/leaderboard", label: t("nav.leaderboard") },

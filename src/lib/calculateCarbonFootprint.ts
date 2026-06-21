@@ -38,6 +38,7 @@ export const AVERAGE_ANNUAL_EMISSIONS_KG = 1900;
 
 export function calculateCarbonFootprint(data: CalculatorData): CarbonBreakdown {
   // --- 1. Transportation ---
+  // Source: IPCC (Intergovernmental Panel on Climate Change) Guidelines for National Greenhouse Gas Inventories
   // Emission factors per km (kg CO2e / km)
   const transportFactors: Record<TransportMode, Record<FuelType, number>> = {
     car: {
@@ -103,7 +104,8 @@ export function calculateCarbonFootprint(data: CalculatorData): CarbonBreakdown 
 
 
   // --- 3. Home Energy ---
-  // India's grid emission factor is approx 0.71 kg CO2e / kWh
+  // Source: EPA (Environmental Protection Agency) / CEA (Central Electricity Authority, India)
+  // India's average grid emission factor is approx 0.71 kg CO2e / kWh
   const gridEmissionFactor = 0.71; 
   const monthlyEnergyEmissions = (Number(data.monthlyElectricityKWh) || 0) * gridEmissionFactor;
   let annualEnergyEmissions = monthlyEnergyEmissions * 12;

@@ -2,7 +2,11 @@
 
 import { useSession } from "next-auth/react"
 import { redirect } from "next/navigation"
-import { HistoryChart } from "@/components/dashboard/history-chart"
+import dynamic from "next/dynamic"
+const HistoryChart = dynamic(() => import("@/components/dashboard/history-chart").then(mod => mod.HistoryChart), { 
+  ssr: false,
+  loading: () => <div className="h-[400px] w-full animate-pulse bg-muted rounded-xl border flex items-center justify-center">Loading chart...</div>
+})
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Leaf, Award, TrendingDown } from "lucide-react"
 import { useCalculatorStore } from "@/store/calculatorStore"
